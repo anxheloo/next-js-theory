@@ -46,4 +46,5 @@
 1. We establish the connection using MongoDb and inside our project we install mongoose and joi
 2. Create the database folder inside src with index.js and connect the database
 3. Create the models folder inside src with blog.js and create the Blog Schema
-4. Create the api folder inside app to create the api routes, we create folders ex: add-routes => route.js inside => next.js knows it automatically same as page.js
+4. Create the api folder inside app to create the api routes, we create folders ex:
+   add-routes => route.js inside => next.js knows it automatically same as page.js

@@ -1,5 +1,6 @@
 import connectToDB from "@/database";
 import Joi from "joi";
+import Blog from "@/models/blog";
 import { NextResponse } from "next/server";
 
 const AddNewBlog = Joi.object({
@@ -10,7 +11,9 @@ const AddNewBlog = Joi.object({
 export const POST = async (req) => {
   try {
     await connectToDB();
+
     const extractBlogData = await req.json();
+    console.log("This is extractBlogData:", extractBlogData);
     const { title, description } = extractBlogData;
 
     const { error } = AddNewBlog.validate({
@@ -19,6 +22,7 @@ export const POST = async (req) => {
     });
 
     if (error) {
+      console.log("There is an error:", error);
       return NextResponse.json({
         success: false,
         message: error.details[0].message,
@@ -28,13 +32,15 @@ export const POST = async (req) => {
     const newlyCreatedBlogItem = await Blog.create(extractBlogData);
 
     if (newlyCreatedBlogItem) {
-      return NextResponse({
+      console.log("everything is okej");
+      return NextResponse.json({
         success: true,
         message: "Blog added successfully",
+        data: newlyCreatedBlogItem,
       });
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error in catch:", error);
     return NextResponse.json({
       success: false,
       message: "Something went wrong! Please try again",

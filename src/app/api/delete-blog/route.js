@@ -1,25 +1,25 @@
 import connectToDB from "@/database";
-import Joi from "joi";
 import Blog from "@/models/blog";
 import { NextResponse } from "next/server";
 
-export const GET = async (req) => {
+export const DELETE = async (req) => {
   try {
     await connectToDB();
+    const { searchParams } = new URL(req.url);
+    const currentBlogId = searchParams.get("id");
 
-    const allBlogs = await Blog.find({});
+    const blogPost = await Blog.findByIdAndDelete(currentBlogId);
+    console.log("This is blog post:", blogPost);
 
-    if (allBlogs) {
-      console.log("everything is okej");
+    if (blogPost) {
       return NextResponse.json({
         success: true,
-        message: "Blog successfully found!",
-        data: allBlogs,
+        message: "Blog successfully deleted!",
       });
     } else {
       return NextResponse.json({
         success: false,
-        message: "Something went wrong! Please try again",
+        message: "Blog Doesn't Exist or is removed!",
       });
     }
   } catch (error) {
